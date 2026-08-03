@@ -1,11 +1,24 @@
 import { useState } from "react";
-import { generateMovieReport } from "../utils/movieData";
+//import { generateMovieReport } from "../utils/movieData";
 import MovieChart from "../components/MovieChart";
-import { getAllMovies } from "../utils/movieData";
+//import { getAllMovies } from "../utils/movieData";
+
+
+
+
 
 export default function Stats() {
   const [report, setReport] = useState(null);
-  const allMovies = getAllMovies();
+  const [allMovies, setAllMovies] = useState([]);
+  //const allMovies = getAllMovies();
+
+
+  const handleReport = async () => {
+    const { getAllMovies, generateMovieReport } = await import('../utils/movieData');
+    setAllMovies(getAllMovies());
+    setReport(generateMovieReport());
+
+  }
 
   return (
     <div>
@@ -14,7 +27,7 @@ export default function Stats() {
       <MovieChart movies={allMovies} />
 
       <button
-        onClick={() => setReport(generateMovieReport())}
+        onClick={handleReport}
         style={{
           padding: "10px 20px", background: "#059669", color: "#fff",
           border: "none", borderRadius: 6, cursor: "pointer", fontSize: 14,

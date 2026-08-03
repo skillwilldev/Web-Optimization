@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { getAllMovies, getMoviesByGenre, searchMovies, getGenres } from "../utils/movieData";
-import MovieChart from "../components/MovieChart";
+//import MovieChart from "../components/MovieChart";
+const MovieChart = lazy(() => import('../components/MovieChart'));
 
 export default function Movies() {
   const [genre, setGenre] = useState("All");
@@ -75,7 +76,11 @@ export default function Movies() {
         <span style={{ color: "#64748b", fontSize: 14 }}>{sorted.length} movies</span>
       </div>
 
-      {showChart && <MovieChart movies={sorted.slice(0, 50)} />}
+      {showChart &&
+        <Suspense fallback={<div>loading movies...</div>}>
+          <MovieChart movies={sorted.slice(0, 50)} />
+        </Suspense>
+      }
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
         {sorted.slice(0, 60).map((movie) => (
